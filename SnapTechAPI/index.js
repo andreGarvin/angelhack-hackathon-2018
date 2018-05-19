@@ -12,22 +12,6 @@ class SnaptechAPI {
             messagingSenderId: "158948839723"
         })
     }
-    uploadPhoto(sessionId, username, photo) {
-        this.send(sessionId, {
-            message: firebasePhotoUrl,
-            timestamp: Date(),
-            type: 'image',
-            username,
-        })
-    }
-    uplaodVideo(sessionId, username, video) {
-        this.send(sessionId, {
-            message: firebasePhotoUrl,
-            timestamp: Date(),
-            type: 'video',
-            username,
-        })
-    }
     async createSession(username) {
         const sessionId = uuid()
         const firebaseUrl = `/sessions/${sessionId}`
@@ -61,6 +45,15 @@ class SnaptechAPI {
             })
         })
     }
+    getSession() {
+        return new Promise(resolve => {
+            const firebaseUrl = `/sessions/${sessionId}`
+            this.firebase.database().ref(firebaseUrl).on('value', session => {
+                session = Object.values(session.val())
+                return resolve(session)
+            })
+        })
+    }
     sesions(type, name) {
         return new Promise(resolve => {
             this.firebase.database().ref('/sessions').on('value', sessions => {
@@ -85,22 +78,30 @@ class SnaptechAPI {
     companies(companyName) {}
 }
 
-const snaptechAPI = new SnaptechAPI
+module.exports = new SnaptechAPI
 
-// snaptechAPI.send('ehu23h0irn', {
-//     messsage: 'antoher one',
-//     username: '',
-//     timestamp: Date()
-// }).catch(console.log)
+/*
+const snaptechAPI = require('snaptechAPI')
 
-// snaptechAPI.on('ehu23h0irn')
-// .then(console.log).catch(console.error)
+snaptechAPI.send('ehu23h0irn', {
+    messsage: 'antoher one',
+    username: '',
+    timestamp: Date()
+}).catch(console.log)
 
+snaptechAPI.on('ehu23h0irn')
+.then(console.log).catch(console.error)
+
+
+snaptechAPI.getSession()
+snaptechAPI.upload()
 
 const message = {
+    timestamp: '',
+    uuid: '',
     message: '',
-    type: 'text', // 'image' 'video'
-    username: ''
+    type: '', // 'text' 'image' 'video', link
+    isUser: true
 }
 
 const db = {
@@ -124,7 +125,7 @@ const db = {
         }
     }
 }
-
+*/
 
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
