@@ -54,10 +54,10 @@ class SnaptechAPI {
             })
         })
     }
-    sesions(type, name) {
+    sessions(type, name) {
         return new Promise(resolve => {
             this.firebase.database().ref('/sessions').on('value', sessions => {
-                let sessions = Object.values(sessions.val())
+                sessions = Object.values(sessions.val())
                     .filter(i => {
                         if (type === 'company') {
                             return i.companyName === name
@@ -71,15 +71,14 @@ class SnaptechAPI {
     }
     async upadateSession(sessionId, activity) {
         const firebaseUrl = `/sessions/${sessionId}`
-        this.firebase.database().ref(firebaseUrl).set({
+        await this.firebase.database().ref(firebaseUrl).set({
             activity,
         })
     }
-    companies(companyName, companyPhoto, companyDepartment){
+    getCompanies(){
         return new Promise(resolve => {
-            const firebaseUrl = `/companies/${companyName}`
-            this.firebase.database().ref(firebaseUrl).on('value', company => {
-                company = company.val()
+            this.firebase.database().ref('/companies').on('value', company => {
+                company = Object.values(company.val())
                 return resolve(company)
             })
         })
@@ -88,10 +87,8 @@ class SnaptechAPI {
 
 module.exports = new SnaptechAPI
 
-const snaptechAPI = require('snaptechAPI')
-
-snaptechAPI.companies('fv2r321rfef')
-.then(console.log).catch(console.error)
+// snaptechAPI.companies('fv2r321rfef')
+// .then(console.log).catch(console.error)
 /*
 const snaptechAPI = require('snaptechAPI')
 
