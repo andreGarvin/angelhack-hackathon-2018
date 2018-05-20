@@ -1,16 +1,22 @@
-import React from 'react';
+import React, {  Component } from 'react';
 import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 
 const pictureSize = 150;
 
-export default class GalleryScreen extends React.Component {
-  state = {
-    faces: {},
-    images: {},
-    photos: [],
-  };
-  _mounted = false;
+export default class GalleryScreen extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      faces: {},
+      images: {},
+      photos: [],
+      selectedPhotos: []
+    };
+    _mounted = false;
+
+  }
 
   componentDidMount() {
     this._mounted = true;
@@ -28,6 +34,16 @@ export default class GalleryScreen extends React.Component {
 
   componentWillUnmount() {
     this._mounted = false;
+  }
+
+  selectPhotos(uri) {
+    this.setState({
+      selectedPhotos: [ ...this.state.selectedPhotos, { type: 'video', uri } ]
+    })
+  }
+
+  async uploadPhoto() {
+    await this.props.upload(this.state.uri)
   }
 
   getImageDimensions = ({ width, height }) => {
@@ -139,7 +155,9 @@ export default class GalleryScreen extends React.Component {
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
-          <View style={styles.pictures}>
+          <View
+            onPress={() => this.selectPhotos(`${FileSystem.documentDirectory}photos/${photoUri}`)}
+            style={styles.pictures}>
             {this.state.photos.map(photoUri => (
               <View style={styles.pictureWrapper} key={photoUri}>
                 <Image
