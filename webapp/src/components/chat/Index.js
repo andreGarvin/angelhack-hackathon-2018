@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 
+import './styles.css'
 import snaptechapi from 'snaptechapi';
 
 class Chat extends Component {
@@ -17,20 +18,20 @@ class Chat extends Component {
         this.renderOptions = this.renderOptions.bind(this)
     }
 
-    async componentDidMount() {
-        const sessions = await snaptechapi.sessions('assign')
-        this.setState({
-            sessions,
-        })
+    // async componentDidMount() {
+    //     const sessions = await snaptechapi.sessions('assign')
+    //     this.setState({
+    //         sessions,
+    //     })
 
-        snaptechapi.on(this.props.sessionId, messages => {
-            this.setState({
-                session: {
-                    messages,
-                }
-            })
-        })
-    }
+    //     snaptechapi.on(this.props.sessionId, messages => {
+    //         this.setState({
+    //             session: {
+    //                 messages,
+    //             }
+    //         })
+    //     })
+    // }
     
     render() {
         return (
@@ -57,8 +58,7 @@ class Chat extends Component {
             <div className="optionBox">
                 <i className="material-icons">photo_camera</i>
                 <TextField 
-                    id='email'
-                    label='Email'
+                    id='message'
                     className='textField'
                     value={this.state.email}
                     margin='normal'

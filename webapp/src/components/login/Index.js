@@ -71,17 +71,10 @@ class Login extends Component {
         const company = email.split("@")[1].split(".")[0]
 
         const allSessions = await snaptechapi.sessions("assign")
-        console.log(allSessions)
         this.setState({
             allSessions,
-            // ready: true,
+            ready: true,
         })
-        // console.log(this.state.allSessions)
-        if(this.state.allSessions.length > 0 ){
-          this.setState({
-              ready: true,
-          })
-        }
     }
 }
 

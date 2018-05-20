@@ -4,17 +4,14 @@ import snaptechapi from 'snaptechapi'
 
 class PoolList extends Component {
   render(){
-    var List = this.props.sessions.map(poolSession =>{
+    return this.props.sessions.map((poolSession, key) => {
       return(
-        <div key={this.props.sessionId}>
+        <div key={key}>
           <h1>{poolSession.username}</h1>
           <div>{poolSession.timestamp}</div>
         </div>
       )
     })
-    return(
-      {List}
-    )
   }
 }
 
@@ -25,14 +22,12 @@ export default class Pool extends Component {
       sessions: this.props.sessions
     }
   }
-render(){
-  console.log(this.props.sessions)
-  var sessions = {sessions: this.state.sessions}
-  return(
-    <PoolList
-    sessions = {sessions}
-    />
-  )
-}
 
+  render(){
+    return(
+      <PoolList
+        sessions = {this.state.sessions}
+      />
+    )
+  }
 }
