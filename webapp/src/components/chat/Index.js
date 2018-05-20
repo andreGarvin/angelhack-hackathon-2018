@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import FontIcon from 'material-ui/FontIcon'
+import TextField from '@material-ui/core/TextField'
 
 import snaptechapi from 'snaptechapi';
 
@@ -10,13 +10,19 @@ class Chat extends Component {
             username: props.username,
             password: props.password,
             sesssion: {},
-            conversation: []
+            sessions: []
         }
 
-        this.renderChat = this.renderChat.bind(this)
+        // this.renderChat = this.renderChat.bind(this)
+        this.renderOptions = this.renderOptions.bind(this)
     }
 
-    componentDidMount() {
+    async componentDidMount() {
+        const sessions = await snaptechapi.sessions('assign')
+        this.setState({
+            sessions,
+        })
+
         snaptechapi.on(this.props.sessionId, messages => {
             this.setState({
                 session: {
@@ -29,27 +35,37 @@ class Chat extends Component {
     render() {
         return (
             <div className="chatSection">
-                {this.renderChat}
+                {this.renderOptions()}
             </div>
         )
     }
 
-    renderChat() {
-        this.setState({
-            conversation: [...this.state.session]
-        })
+    // renderChat() {
+    //     this.setState({
+    //         conversation: [...this.state.session]
+    //     })
 
-        return this.state.conversation.map(text => {
-            <div>
+    //     return this.state.conversation.map(text => {
+    //         <div>
 
-            </div>
-        })
-    }
+    //         </div>
+    //     })
+    // }
 
     renderOptions() {
-        <div className="optionBox">
-             <FontIcon className="material-icons">home</FontIcon>
-        </div>
+        return (
+            <div className="optionBox">
+                <i className="material-icons">photo_camera</i>
+                <TextField 
+                    id='email'
+                    label='Email'
+                    className='textField'
+                    value={this.state.email}
+                    margin='normal'
+                />
+                <i className="material-icons">send</i>
+            </div>
+        )
     }
 }
 

@@ -8,9 +8,10 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 20%;
-    margin-top: 10%;
+
     padding: 50px;
+    margin: 0 auto;
+    margin-top: 10%;
     border-style: ridge;
     border-radius: 15px;
     border-width: thick;
@@ -22,6 +23,11 @@ html {
 
 .textField {
     width: 100%;
+}
+
+.MuiInput-underline-19:before,
+.MuiInput-underline-19:after {
+    border-bottom: 0 !important;
 }
 
 .jss1.jss2.textField{
