@@ -54,7 +54,7 @@ class SnaptechAPI {
             })
         })
     }
-    sesions(type, name) {
+    sessions(type, name) {
         return new Promise(resolve => {
             this.firebase.database().ref('/sessions').on('value', sessions => {
                 let sessions = Object.values(sessions.val())
@@ -71,62 +71,21 @@ class SnaptechAPI {
     }
     async upadateSession(sessionId, activity) {
         const firebaseUrl = `/sessions/${sessionId}`
-        this.firebase.database().ref(firebaseUrl).set({
+        await this.firebase.database().ref(firebaseUrl).set({
             activity,
         })
     }
-    companies(companyName) {}
+    getCompanies(){
+        return new Promise(resolve => {
+            this.firebase.database().ref('/companies').on('value', company => {
+                company = Object.values(company.val())
+                return resolve(company)
+            })
+        })
+    }
 }
 
 module.exports = new SnaptechAPI
-
-/*
-const snaptechAPI = require('snaptechAPI')
-
-snaptechAPI.send('ehu23h0irn', {
-    messsage: 'antoher one',
-    username: '',
-    timestamp: Date()
-}).catch(console.log)
-
-snaptechAPI.on('ehu23h0irn')
-.then(console.log).catch(console.error)
-
-
-snaptechAPI.getSession()
-snaptechAPI.upload()
-
-const message = {
-    timestamp: '',
-    uuid: '',
-    message: '',
-    type: '', // 'text' 'image' 'video', link
-    isUser: true
-}
-
-const db = {
-    companies: {
-        csico: {
-
-        }
-    },
-    sessions: {
-        ye12y89eru390u09: {
-            messages: [
-                {
-                    message: '',
-                    type: 'text'
-                }
-            ],
-            inittime: '',
-            techcnican: '',
-            username: '',
-            activity: ''
-        }
-    }
-}
-*/
-
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
 // storageRef.on('state_changed', storageObj => {
