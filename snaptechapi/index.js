@@ -12,16 +12,21 @@ class SnaptechAPI {
             messagingSenderId: "158948839723"
         })
     }
-    async createSession(username) {
+    async createSession(username, companyName) {
         const sessionId = uuid()
         const firebaseUrl = `/sessions/${sessionId}`
-        this.firebase.database().ref(firebaseUrl).set({
-            sessionId,
+        console.log(this)
+        await this.firebase.database().ref(firebaseUrl).set({
             username,
-            companyName: '',
+            sessionId,
+            companyName,
             inittime: Date(),
             activity: 'pending'
         })
+        return {
+            companyName,
+            sessionId
+        }
     }
     async send(sessionId, message) {
         const firebaseUrl = `/sessions/${sessionId}/messages`
@@ -85,8 +90,7 @@ class SnaptechAPI {
     }
 }
 
-const s = new SnaptechAPI
-export default s
+export default new SnaptechAPI
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
 // storageRef.on('state_changed', storageObj => {

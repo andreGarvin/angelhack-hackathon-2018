@@ -23,24 +23,31 @@ class Home extends Component {
 
   async componentDidMount() {
     const companies = await SnapTechAPI.getCompanies()
+    // const sessions = await SnapTechAPI.sessions('user', 'ricky')
     this.setState({
       companies,
+      // sessions,
     })
   }
 
   render() {
-    const data = [{sessionId: '124125', activity: 'closed', companyName: 'Pepsi', technician: 'Bob'},{sessionId: '12125', activity: 'closed', companyName: 'Coke', technician: 'Peter'}]
+    const data = [
+      {sessionId: '124125', activity: 'closed', companyName: 'Pepsi', technician: 'Bob'},
+      {sessionId: '12125', activity: 'closed', companyName: 'Coke', technician: 'Peter'}
+    ]
+
     return (
       <View style={{ flex: 1 }}>
           <Header headerText={'Get Support'} />
-          <Companies companies={this.state.companies} />
-          <Sessions
-            data = {data}
-          />
+          <Companies
+            navigation={this.props.navigation}
+            companies={this.state.companies} />
           <Button
             title="Go to messages"
             onPress={() =>
-              this.props.navigation.navigate('Messaging')
+              this.props.navigation.navigate('Sessions', {
+                sessions: data,
+              })
             }
           />
       </View>
@@ -51,9 +58,9 @@ class Home extends Component {
 const Root = createStackNavigator({
   Home: Home,
   Companies,
+  Sessions,
   Camera,
-
-  // Sessions,
+  Chat,
 })
 
 export default Root;

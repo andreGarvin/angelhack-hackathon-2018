@@ -3,41 +3,36 @@ import {View, Text, TouchableOpacity} from 'react-native'
 import Card from '../Card'
 import CardSection from '../CardSection'
 
-var pendingStyle = {color: 'red', borderWidth: 1, }
-var deStyle = {color: 'red', borderWidth: 1 }
-var newStyle = {color: 'green', borderWidth: 3}
-var closedStyle = {color: 'blue', borderWidth: 1}
-var companyNameStyle = {}
-
-// return(
-//   <TouchableOpacity key={conversation.sessionId}>
-//     <View style={deStyle}>
-//       <View style = {conversation.activity === 'pending' ? pendingStyle : conversation.activity === 'new' ? newStyle : pendingStyle}>
-//         {conversation.activity}
-//       </View>
-//       <View style = {companyNameStyle}>
-//         {conversation.companyName}
-//       </View>
-//       <View>
-//         {conversation.technician}
-//       </View>
-//     </View>
-//   </TouchableOpacity>
-// );
+const pendingStyle = {color: 'red', borderWidth: 1, }
+const deStyle = {color: 'red', borderWidth: 1 }
+const newStyle = {color: 'green', borderWidth: 3}
+const closedStyle = {color: 'blue', borderWidth: 1}
+const companyNameStyle = {}
 
 class ConversationList extends Component{
     render(){
       const list = this.props.data.map(conversation => {
         return (
-          <TouchableOpacity key={conversation.sessionId}>
-          <CardSection style={deStyle}>
-          <Text style = {conversation.activity === 'pending' ? pendingStyle : conversation.activity === 'new' ? newStyle : closedStyle}>
-            {conversation.activity}
-          </Text>
-          <Text style = {companyNameStyle}>
-            {conversation.companyName} Tech name:{conversation.technician}
-          </Text>
-          </CardSection>
+          <TouchableOpacity
+            onPress={() => this.props.navigateFunc('Chat', {
+              sessionId: conversation.sessionId
+            })}
+            key={conversation.sessionId}
+          >
+            <CardSection style={deStyle}>
+            <Text
+              style={
+                conversation.activity === 'pending' ?
+                  pendingStyle :
+                    conversation.activity === 'new' ?
+                      newStyle : closedStyle
+            }>
+              {conversation.activity}
+            </Text>
+            <Text style = {companyNameStyle}>
+              {conversation.companyName} Tech name:{conversation.technician}
+            </Text>
+            </CardSection>
           </TouchableOpacity>
         )
       })
@@ -49,11 +44,13 @@ class ConversationList extends Component{
 export default class Sessions extends React.Component{
   constructor(props){
     super(props);
+
     this.state = {
       // set as state any information that will be changing with updates
       data: [],
     };
   }
+  
   // search(searchTerm){
   //
   //   data = this.state.data.companies(s)
@@ -61,18 +58,17 @@ export default class Sessions extends React.Component{
   // }
 
   componentDidMount(){
-    // potentially import data
+    const { navigation } = this.props;
     this.setState({
-      // props?
-      data: this.props.data
+      data: navigation.getParam('sessions', [])
     });
-    console.log(this.props.data)
   }
+
   render(){
-    const data = this.state.data
     return (
       <ConversationList
-        data = {data}
+        navigateFunc={this.props.navigation.navigate}
+        data = {this.state.data}
       />
     )
   }
