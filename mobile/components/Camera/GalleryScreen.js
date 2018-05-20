@@ -37,13 +37,14 @@ export default class GalleryScreen extends Component {
   }
 
   selectPhotos(uri) {
+    const type = uri.split('.')[1]
     this.setState({
-      selectedPhotos: [ ...this.state.selectedPhotos, { type: 'video', uri } ]
+      selectedPhotos: [ ...this.state.selectedPhotos, { type, uri } ]
     })
   }
 
   async uploadPhoto() {
-    await this.props.upload(this.state.uri)
+    await this.props.upload(this.state.selectedPhotos)
   }
 
   getImageDimensions = ({ width, height }) => {
@@ -155,11 +156,17 @@ export default class GalleryScreen extends Component {
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
-          <View
-            onPress={() => this.selectPhotos(`${FileSystem.documentDirectory}photos/${photoUri}`)}
-            style={styles.pictures}>
+          <View style={styles.pictures}>
             {this.state.photos.map(photoUri => (
-              <View style={styles.pictureWrapper} key={photoUri}>
+              <View
+                style={{
+                  borderColor: this.state.selectedPhotos.map(i => i.uri).indexOf(photoUri) === -1 ? '' : '#FFFF00' 
+                }}
+                onPress={() => {
+                  this.selectPhotos(`${FileSystem.documentDirectory}photos/${photoUri}`)
+                }}
+                style={styles.pictureWrapper}
+                key={photoUri}>
                 <Image
                   key={photoUri}
                   style={styles.picture}

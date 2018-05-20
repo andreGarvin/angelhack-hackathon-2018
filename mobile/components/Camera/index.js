@@ -60,6 +60,10 @@ export default class CameraScreen extends Component {
     FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`)
   }
 
+  async goHOME() {
+    await this.props.navigation.navigate('home') 
+  }
+
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
     return ratios;
@@ -144,7 +148,7 @@ export default class CameraScreen extends Component {
       const data = await this.camera.takePictureAsync()
       FileSystem.moveAsync({
           from: data.uri,
-          to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}`,
+          to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
         }).then(() => {
           this.setState({
             photoId: this.state.photoId + 1,

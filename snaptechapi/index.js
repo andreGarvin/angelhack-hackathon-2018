@@ -40,6 +40,7 @@ class snaptechapi {
         return await this.firebase.database().ref(firebaseUrl).push(message)   
     }
     on(sessionId, cb) {
+        console.log(sessionId)
         const firebaseUrl = `/sessions/${sessionId}/messages`
         this.firebase.database().ref(firebaseUrl).on('value', message => {
                 console.log(message)
