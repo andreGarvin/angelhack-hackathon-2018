@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
+import Avatar from 'react-avatar';
 
 import './styles.css'
 import snaptechapi from 'snaptechapi';
@@ -9,49 +10,61 @@ class Chat extends Component {
         super(props)
         this.state = {
             username: props.username,
-            password: props.password,
+            // password: props.password,
             sesssion: {},
             sessions: []
         }
 
-        // this.renderChat = this.renderChat.bind(this)
+        this.renderChat = this.renderChat.bind(this)
         this.renderOptions = this.renderOptions.bind(this)
     }
 
-    // async componentDidMount() {
-    //     const sessions = await snaptechapi.sessions('assign')
-    //     this.setState({
-    //         sessions,
-    //     })
+    async componentDidMount() {
+        const sessionId = this.props.sessionId
+        const session = await snaptechapi.getSession(sessionId)
 
-    //     snaptechapi.on(this.props.sessionId, messages => {
-    //         this.setState({
-    //             session: {
-    //                 messages,
-    //             }
-    //         })
-    //     })
-    // }
+        this.setState({
+            session,
+        })
+
+        snaptechapi.on(sessionId, messages => {
+            this.setState({
+                session: {
+                    // messages: Object.keys(messages),
+                    messages: ["Hi", "What can I help you with?"]
+                }
+            })
+        })
+    }
     
     render() {
         return (
             <div className="chatSection">
+                {this.renderChat()}
                 {this.renderOptions()}
             </div>
         )
     }
 
-    // renderChat() {
-    //     this.setState({
-    //         conversation: [...this.state.session]
-    //     })
-
-    //     return this.state.conversation.map(text => {
-    //         <div>
-
-    //         </div>
-    //     })
-    // }
+    renderChat() {
+        if(this.state.session && this.state.session.messages) {
+            // console.log(this.state.session.messages)
+            return this.state.session.messages.map((messages, key) => {
+                return (
+                    <div key={key} className={this.state.session.isUser ? "userChat" : "techChat" }>
+                        <h4>{messages}</h4>
+                        <Avatar name={this.props.username} />
+                    </div>
+                )
+            })
+        } else {
+            return (
+                <div>
+                    <h4>Welcome Back! {this.props.username}</h4>
+                </div>
+            )
+        }
+    }
 
     renderOptions() {
         return (
@@ -62,13 +75,12 @@ class Chat extends Component {
                     className='textField'
                     value={this.state.email}
                     margin='normal'
+                    multiline={true}
                 />
                 <i className="material-icons">send</i>
             </div>
         )
     }
 }
-
-
 
 export default Chat

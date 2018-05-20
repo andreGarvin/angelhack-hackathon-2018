@@ -41,9 +41,10 @@ class snaptechapi {
     }
     on(sessionId, cb) {
         const firebaseUrl = `/sessions/${sessionId}/messages`
-        this.firebase.database().ref(firebaseUrl).on('value', messages => {
-            messages = messages.val() ? Object.values(messages.val()) : []
-            cb(messages)
+        this.firebase.database().ref(firebaseUrl).on('value', message => {
+                console.log(message)
+                message = message.val() !== undefined && message.val() !== null ? Object.values(message.val()) : {}
+                cb(message)
         })
     }
     getSession(sessionId) {
@@ -59,8 +60,11 @@ class snaptechapi {
             this.firebase.database().ref('/sessions').on('value', sessions => {
                 sessions = Object.values(sessions.val())
                     .filter(i => {
-                        if (type === 'company') {
+                        if (type === 'assign') {
+                            return i
+                        } else if (type === 'company') {
                             return i.companyName === name
+                            
                         } else if (type === 'user') {
                             return i.username === name
                         }

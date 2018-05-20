@@ -20,6 +20,49 @@ input:not([type]), input[type="text"]:not(.browser-default), input[type="passwor
     border-bottom: 0 !important;
 }
 
-.MuiInput-input-13 {
-    padding: 15
+.optionBox {
+    /* display: flex; */
+    align-items: flex-end;
+    justify-content: center;
+    flex-direction: row;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    overflow: hidden;
 }
+
+.textField {
+    padding: 10px !important;
+    width: 50%;
+}
+
+.userChat {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.techChat {
+    display: flex;
+    justify-content: flex-end;
+    margin: 1rem;
+}
+.sb-avatar {
+    margin: 3rem;
+}
+
+.card {
+    background-color: white;
+    border: 1px solid #ddd;
+    font-family: 25px;
+    padding: 20px;
+    margin-right: 20px;
+    /* float: left; */
+    width: 12rem;
+}
+
+/* .cardBox {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    max-width: 500px; */
+/* } */

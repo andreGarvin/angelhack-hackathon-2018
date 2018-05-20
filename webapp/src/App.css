@@ -1,5 +1,16 @@
+html {
+  height: 100vh;
+  width: 100%;
+}
 .App {
+  background: "#eee";
   text-align: center;
+  height: 100vh;
+  max-width: 1224px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  /* overflow: hidden; */
 }
 
 .App-logo {
@@ -8,10 +19,10 @@
 }
 
 .App-header {
-  background-color: #222;
+  /* background-color: #222; */
   height: 150px;
   padding: 20px;
-  color: white;
+  /* color: white; */
 }
 
 .App-title {
