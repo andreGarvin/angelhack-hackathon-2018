@@ -15,13 +15,12 @@ class SnaptechAPI {
     async createSession(username, companyName) {
         const sessionId = uuid()
         const firebaseUrl = `/sessions/${sessionId}`
-        console.log(this)
         await this.firebase.database().ref(firebaseUrl).set({
             username,
             sessionId,
             companyName,
             inittime: Date(),
-            activity: 'pending'
+            activity: 'pending',
         })
         return {
             companyName,
@@ -44,9 +43,9 @@ class SnaptechAPI {
     on(sessionId) {
         return new Promise(resolve => {
             const firebaseUrl = `/sessions/${sessionId}/messages`
-            this.firebase.database().ref(firebaseUrl).on('value', message => {
-                message = Object.values(message.val())
-                return resolve(message)
+            this.firebase.database().ref(firebaseUrl).on('value', messages => {
+                messages = messages.val() ? Object.values(messages.val()) : []
+                resolve(messages)
             })
         })
     }
@@ -54,8 +53,7 @@ class SnaptechAPI {
         return new Promise(resolve => {
             const firebaseUrl = `/sessions/${sessionId}`
             this.firebase.database().ref(firebaseUrl).on('value', session => {
-                session = Object.values(session.val())
-                return resolve(session)
+                return resolve(session.val())
             })
         })
     }

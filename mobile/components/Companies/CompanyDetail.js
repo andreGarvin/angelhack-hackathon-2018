@@ -13,8 +13,7 @@ class CompanyDetail extends Component {
   async createSession(companyName) {
     const { sessionId } = await snaptechapi.createSession('ricky', companyName)
     this.props.navigation.navigate('Chat', {
-      sessionId,
-      companyName
+      sessionId
     })
   }
   render() {
