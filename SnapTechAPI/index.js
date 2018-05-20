@@ -75,11 +75,23 @@ class SnaptechAPI {
             activity,
         })
     }
-    companies(companyName) {}
+    companies(companyName, companyPhoto, companyDepartment){
+        return new Promise(resolve => {
+            const firebaseUrl = `/companies/${companyName}`
+            this.firebase.database().ref(firebaseUrl).on('value', company => {
+                company = company.val()
+                return resolve(company)
+            })
+        })
+    }
 }
 
 module.exports = new SnaptechAPI
 
+const snaptechAPI = require('snaptechAPI')
+
+snaptechAPI.companies('fv2r321rfef')
+.then(console.log).catch(console.error)
 /*
 const snaptechAPI = require('snaptechAPI')
 
