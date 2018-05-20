@@ -6,15 +6,23 @@ import Header from './Header';
 import Camera from './Camera';
 import Companies from './Companies';
 
+import SnapTechAPI from 'SnapTechAPI';
+
 class Home extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      companies: [
-        { name: "Cisco", thumbnail_img: "https://www.asaltech.com/wp-content/uploads/2014/08/Cisco-Logo-200x200.png" }
-      ]
+      companies: [],
+      sessions: {}
     }
+  }
+
+  async componentDidMount() {
+    const companies = await SnapTechAPI.getCompanies()
+    this.setState({
+      companies,
+    })
   }
 
   render() {
