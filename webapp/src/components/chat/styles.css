@@ -1,0 +1,25 @@
+.MuiInput-underline-19:before,
+.MuiInput-underline-19:after {
+    border-bottom: 0 !important;
+}
+
+input:not([type]), input[type=text]:not(.browser-default), input[type=password]:not(.browser-default), input[type=email]:not(.browser-default), input[type=url]:not(.browser-default), input[type=time]:not(.browser-default), input[type=date]:not(.browser-default), input[type=datetime]:not(.browser-default), input[type=datetime-local]:not(.browser-default), input[type=tel]:not(.browser-default), input[type=number]:not(.browser-default), input[type=search]:not(.browser-default), textarea.materialize-textarea {
+    border-bottom: 0 !important;
+}
+
+input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {
+    border-bottom: 0 !important;
+}
+
+.MuiInput-underline-9:before,
+.MuiInput-underline-9:after,
+.MuiInput-underline-9,
+.MuiInput-focused-7:after,
+.MuiInput-focused-7:before,
+.MuiInput-focused-7 {
+    border-bottom: 0 !important;
+}
+
+.MuiInput-input-13 {
+    padding: 15
+}
