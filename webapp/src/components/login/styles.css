@@ -8,6 +8,12 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-left: 20%;
+    margin-top: 10%;
+    padding: 50px;
+    border-style: ridge;
+    border-radius: 15px;
+    border-width: thick;
 
 
     background-color: #eee;
@@ -16,4 +22,13 @@ html {
 
 .textField {
     width: 100%;
+}
+
+.jss1.jss2.textField{
+    margin-left: -10%;
+    padding-top: 10%;
+}
+
+.jss10.jss5.jss6.jss9{
+    font-size: 32px;
 }
