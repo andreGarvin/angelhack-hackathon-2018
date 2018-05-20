@@ -57,7 +57,7 @@ class SnaptechAPI {
     sessions(type, name) {
         return new Promise(resolve => {
             this.firebase.database().ref('/sessions').on('value', sessions => {
-                let sessions = Object.values(sessions.val())
+                sessions = Object.values(sessions.val())
                     .filter(i => {
                         if (type === 'company') {
                             return i.companyName === name

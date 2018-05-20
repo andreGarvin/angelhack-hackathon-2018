@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { View } from 'react-native'
 import Header from './Header'
 import CompanyList from './CompanyList'
+import { Text } from 'react-native'
+import Chat from './Chat/Index'
 
 class App extends Component {
   constructor(props) {
@@ -12,12 +14,12 @@ class App extends Component {
       ]
     };
   }
-  
+
   render() {
     return (
       <View style={ {flex: 1} }>
         <Header headerText={'Get Support'} />
-        <CompanyList companies={this.state.companies}/>
+        <CompanyList companies={this.state.companies} />
       </View >
     )
   }
