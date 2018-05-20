@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
     StyleSheet,
-    View, 
+    View,
     Text,
     Dimensions,
     TextInput,
@@ -26,7 +26,7 @@ const messages = [
                 activity: 'pending',
                 isUser: true,
                 message: "I NEED HELP!",
-            }, 
+            },
             {
                 sessionId: "123456",
                 username: "Reni",
@@ -35,7 +35,7 @@ const messages = [
                 activity: 'pending',
                 isUser: true,
                 message: "I NEED HELP!",
-            }, 
+            },
             {
                 sessionId: "123456",
                 username: "Reni",
@@ -44,7 +44,7 @@ const messages = [
                 activity: 'pending',
                 isUser: true,
                 message: "I NEED HELP!",
-            }, 
+            },
 
             {
                 sessionId: "123456",
@@ -72,7 +72,7 @@ const messages = [
                 activity: 'pending',
                 isUser: true,
                 message: "I NEED HELP!",
-            }, 
+            },
 
 
         ]
@@ -90,11 +90,11 @@ class Chat extends Component {
 
     render() {
         return (
-            <ListView 
+            <ListView
                 style={{ flex: 1, marginTop: 25 }}
                 dataSource={this.state.dataSource}
                 renderRow={(data) => <RenderChat {...data} />}
-                renderFooter={() => this.renderChatOptions()} 
+                renderFooter={() => this.renderChatOptions()}
             />
         )
     }
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
 
         // DIMENSION PROPS
-        height: height * .37, 
+        height: height * .37,
     },
 
     chatBox: {
@@ -174,7 +174,7 @@ const RenderChat = (props) => (
         <Text style={ props.isUser ? styles.messageBubbleUser : styles.messageBubbleTech }>{ props.message }</Text>
         <Avatar
             small
-            rounded 
+            rounded
             source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}
             containerStyle={ props.isUser ? { alignSelf: 'flex-end' } : { alignSelf: 'flex-start' } }
         />
