@@ -109,14 +109,18 @@ class Chat extends Component {
     }
 
     render() {
-        return (
-            <ListView
-                style={{ flex: 1, marginTop: 25 }}
-                dataSource={this.state.session.messages}
-                renderRow={(data) => <RenderChat {...data} />}
-                renderFooter={() => this.renderChatOptions()}
-            />
-        )
+        if(this.state.session) {
+            return (
+                <ListView
+                    style={{ flex: 1, marginTop: 25 }}
+                    dataSource={this.state.session.messages}
+                    renderRow={(data) => <RenderChat {...data} />}
+                    renderFooter={() => this.renderChatOptions()}
+                />
+            )
+        } else {
+            return (<Text> Hi There! </Text>);
+        }
     }
 
     // ALL CHAT OPTIONS TOOLS
