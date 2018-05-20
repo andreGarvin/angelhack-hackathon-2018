@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 // UI STUFF FROM MATERIAL UI
 import './styles.css'
 import TextField from '@material-ui/core/TextField'
+import Pool from '../pool'
 
 import snaptechapi from 'snaptechapi';
 
@@ -23,7 +24,7 @@ class Login extends Component {
         if(!this.state.ready) {
             return (
                 <form className='form' onSubmit={this.handleSubmit} >
-                    <TextField 
+                    <TextField
                         id='email'
                         label='Email'
                         className='textField'
@@ -31,7 +32,7 @@ class Login extends Component {
                         onChange={(text) => this.handleChange('email', text)}
                         margin='normal'
                     />
-                    <TextField 
+                    <TextField
                         id='password'
                         label='Password'
                         type='password'
@@ -48,10 +49,14 @@ class Login extends Component {
         }
         else {
             // GIVE ME YOUR LIST COMPONENT HERE
-            return ( )
+            return (
+              <Pool
+                sessions = {this.state.allSessions}
+              />
+            )
         }
     }
-    
+
     handleChange(current, text) {
         this.setState({
             [current]: text.target.value
@@ -66,11 +71,17 @@ class Login extends Component {
         const company = email.split("@")[1].split(".")[0]
 
         const allSessions = await snaptechapi.sessions("assign")
-
+        console.log(allSessions)
         this.setState({
             allSessions,
-            ready: true,
+            // ready: true,
         })
+        // console.log(this.state.allSessions)
+        if(this.state.allSessions.length > 0 ){
+          this.setState({
+              ready: true,
+          })
+        }
     }
 }
 
