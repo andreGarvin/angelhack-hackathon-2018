@@ -55,6 +55,7 @@ class Home extends Component {
   }
 }
 
+export default App
 const Root = createStackNavigator({
   Home: Home,
   Companies,
