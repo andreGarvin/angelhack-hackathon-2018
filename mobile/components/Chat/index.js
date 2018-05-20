@@ -38,6 +38,30 @@ class Chat extends Component {
         super(props)
         
         this.state = {
+            session: {}
+        }
+
+        this.renderChatOptions = this.renderChatOptions.bind(this)
+        this.sendMessage = this.sendMessage.bind(this)
+        this.onChange = this.onChange.bind(this)
+    }
+
+    async componentWillMount() {
+        const { navigation } = this.props
+        const sessionId = navigation.getParam('sessionId')
+        const session = await snaptechapi.getSession(sessionId)
+        session.messages = ds.cloneWithRows([
+            {
+                sessionId: "123456",
+                username: "Reni",
+                companyName: "Yahoo",
+                inittime: Date(),
+                activity: 'pending',
+                isUser: true,
+                message: "I NEED HELP!",
+            }
+        ])
+        this.setState({
             session: {
                 messages: ds.cloneWithRows([
                     {
@@ -51,41 +75,33 @@ class Chat extends Component {
                     }
                 ])
             }
-        }
-
-        this.renderChatOptions = this.renderChatOptions.bind(this)
-        this.sendMessage = this.sendMessage.bind(this)
-        this.onChange = this.onChange.bind(this)
-    }
-
-    async componentDidMount() {
-        const { navigation } = this.props
-        const sessionId = navigation.getParam('sessionId')
-        const session = await snaptechapi.getSession(sessionId)
-        session.message = ds.cloneWithRows([
-            {
-                sessionId: "123456",
-                username: "Reni",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: true,
-                message: "I NEED HELP!",
-            }
-        ])
-        this.setState({
-            session: { ...this.state.session, ...session }
         })
         await this.onMessages(sessionId)
     }
 
     onMessages(sessionId) {
-        const { navigation } = this.props
         snaptechapi.on(sessionId, messages => {
+            console.log(messages)
             if (messages !== []) {
                 this.setState({
                     session: {
                         messages: ds.cloneWithRows(messages)
+                    }
+                })
+            } else {
+                this.setState({
+                    session: {
+                        messages: ds.cloneWithRows([
+                            {
+                                sessionId: "123456",
+                                username: "Reni",
+                                companyName: "Yahoo",
+                                inittime: Date(),
+                                activity: 'pending',
+                                isUser: true,
+                                message: "I NEED HELP!",
+                            }
+                        ])
                     }
                 })
             }
@@ -109,14 +125,42 @@ class Chat extends Component {
     }
 
     render() {
+        const data = {
+            session: {
+                messages: ds.cloneWithRows([
+                    {
+                        sessionId: "123456",
+                        username: "Reni",
+                        companyName: "Yahoo",
+                        inittime: Date(),
+                        activity: 'pending',
+                        isUser: true,
+                        message: "I NEED HELP!",
+                    }
+                ])
+            }
+        }
         return (
             <ListView
-                style={{ flex: 1, marginTop: 25 }}
-                dataSource={this.state.session.messages}
+                style={{ flex: 1, marginTop: 35 }}
+                dataSource={data.session.messages}
                 renderRow={(data) => <RenderChat {...data} />}
                 renderFooter={() => this.renderChatOptions()}
+                enableEmptySections={true}
             />
         )
+        // return <View>{
+        //     this.state.session.messages ?
+                
+        //         :
+        //         <View
+        //             style={{ flex: .10, marginTop: 10 }}
+        //         >
+        //             <Text
+        //                 style={{ color: 'grey' }}
+        //             >Type your needs here :)</Text>
+        //         </View>
+        // }</View>
     }
 
     // ALL CHAT OPTIONS TOOLS

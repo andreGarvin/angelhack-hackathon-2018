@@ -25,6 +25,7 @@ class SupportTypeList extends Component {
         return (
           <TouchableOpacity
             onPress={() => this.createSession()}
+            key={supportType}
           >
             <Card>
               <CardSection>

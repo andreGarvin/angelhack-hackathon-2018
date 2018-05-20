@@ -40,10 +40,11 @@ class snaptechapi {
         return await this.firebase.database().ref(firebaseUrl).push(message)   
     }
     on(sessionId, cb) {
+        console.log(sessionId)
         const firebaseUrl = `/sessions/${sessionId}/messages`
         this.firebase.database().ref(firebaseUrl).on('value', messages => {
             messages = messages.val() ? Object.values(messages.val()) : []
-            cb(messages)
+            return cb(messages)
         })
     }
     getSession(sessionId) {
