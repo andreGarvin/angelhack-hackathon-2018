@@ -1,5 +1,5 @@
-const firebase = require('firebase')
-const uuid = require('uuid')
+import * as firebase from 'firebase';
+import uuid from 'uuid';
 
 class SnaptechAPI {
     constructor() {
@@ -45,7 +45,7 @@ class SnaptechAPI {
             })
         })
     }
-    getSession() {
+    getSession(sessionId) {
         return new Promise(resolve => {
             const firebaseUrl = `/sessions/${sessionId}`
             this.firebase.database().ref(firebaseUrl).on('value', session => {
@@ -85,57 +85,8 @@ class SnaptechAPI {
     }
 }
 
-module.exports = new SnaptechAPI
-
-// snaptechAPI.companies('fv2r321rfef')
-// .then(console.log).catch(console.error)
-/*
-const snaptechAPI = require('snaptechAPI')
-
-snaptechAPI.send('ehu23h0irn', {
-    messsage: 'antoher one',
-    username: '',
-    timestamp: Date()
-}).catch(console.log)
-
-snaptechAPI.on('ehu23h0irn')
-.then(console.log).catch(console.error)
-
-
-snaptechAPI.getSession()
-snaptechAPI.upload()
-
-const message = {
-    timestamp: '',
-    uuid: '',
-    message: '',
-    type: '', // 'text' 'image' 'video', link
-    isUser: true
-}
-
-const db = {
-    companies: {
-        csico: {
-
-        }
-    },
-    sessions: {
-        ye12y89eru390u09: {
-            messages: [
-                {
-                    message: '',
-                    type: 'text'
-                }
-            ],
-            inittime: '',
-            techcnican: '',
-            username: '',
-            activity: ''
-        }
-    }
-}
-*/
-
+const s = new SnaptechAPI
+export default s
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
 // storageRef.on('state_changed', storageObj => {
