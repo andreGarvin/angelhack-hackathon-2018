@@ -16,66 +16,67 @@ import {
 const snapTechAPI = require('SnapTechAPI')
 const { width, height } = Dimensions.get('window')
 
-const messages = [
-            {
-                sessionId: "123456",
-                username: "Reni",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: true,
-                message: "I NEED HELP!",
-            }, 
-            {
-                sessionId: "123456",
-                username: "Reni",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: true,
-                message: "I NEED HELP!",
-            }, 
-            {
-                sessionId: "123456",
-                username: "Reni",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: true,
-                message: "I NEED HELP!",
-            }, 
+// const messages = [
+//             {
+//                 sessionId: "123456",
+//                 username: "Reni",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: true,
+//                 message: "I NEED HELP!",
+//             }, 
+//             {
+//                 sessionId: "123456",
+//                 username: "Reni",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: true,
+//                 message: "I NEED HELP!",
+//             }, 
+//             {
+//                 sessionId: "123456",
+//                 username: "Reni",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: true,
+//                 message: "I NEED HELP!",
+//             }, 
 
-            {
-                sessionId: "123456",
-                username: "TECH GUY",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: false,
-                message: "What can I help you with?"
-            },
-{
-                sessionId: "123456",
-                username: "TECH GUY",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: false,
-                message: "What can I help you with?"
-            },
-            {
-                sessionId: "123456",
-                username: "Reni",
-                companyName: "Yahoo",
-                inittime: Date(),
-                activity: 'pending',
-                isUser: true,
-                message: "I NEED HELP!",
-            }, 
+//             {
+//                 sessionId: "123456",
+//                 username: "TECH GUY",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: false,
+//                 message: "What can I help you with?"
+//             },
+// {
+//                 sessionId: "123456",
+//                 username: "TECH GUY",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: false,
+//                 message: "What can I help you with?"
+//             },
+//             {
+//                 sessionId: "123456",
+//                 username: "Reni",
+//                 companyName: "Yahoo",
+//                 inittime: Date(),
+//                 activity: 'pending',
+//                 isUser: true,
+//                 message: "I NEED HELP!",
+//             }, 
 
 
-        ]
+//         ]
 
+// CREATES THE LIST VIEW
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
 class Chat extends Component {
             constructor(props) {
@@ -98,6 +99,7 @@ class Chat extends Component {
         )
     }
 
+    // ALL CHAT OPTIONS TOOLS
     renderChatOptions() {
         return (
             <View style={ styles.toolBox }>
@@ -117,6 +119,7 @@ class Chat extends Component {
     }
 }
 
+// WILL RENDER THE STYLES
 const styles = StyleSheet.create({
     toolBox: {
         // FLEX PROPS
@@ -168,6 +171,7 @@ const styles = StyleSheet.create({
     },
 })
 
+// WILL RENDER THE CHAT
 const RenderChat = (props) => (
     <View style={ props.isUser ? styles.userChat : styles.techChat }>
         <Text style={ props.isUser ? styles.messageBubbleUser : styles.messageBubbleTech }>{ props.message }</Text>
