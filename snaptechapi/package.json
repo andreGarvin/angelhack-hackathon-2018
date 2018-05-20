@@ -1,5 +1,5 @@
 {
-  "name": "angelhack-hackathon-2018",
+  "name": "snaptechapi",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "firebase": "^5.0.3",
+    "react-native": "^0.55.4",
     "uuid": "^3.2.1"
   }
 }

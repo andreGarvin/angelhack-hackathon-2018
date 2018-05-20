@@ -1,6 +1,8 @@
-import { Constants, Camera, FileSystem, Permissions } from 'expo';
 import React from 'react';
+import { Constants, Camera, FileSystem, Permissions } from 'expo';
 import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'react-native';
+
+
 import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
 
@@ -109,10 +111,10 @@ export default class CameraScreen extends React.Component {
     });
   }
 
-  takePicture = async function() {
+  async takePicture() {
     if (this.camera) {
-      this.camera.takePictureAsync().then(data => {
-        FileSystem.moveAsync({
+      const data = await this.camera.takePictureAsync()
+      FileSystem.moveAsync({
           from: data.uri,
           to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
         }).then(() => {
@@ -121,7 +123,6 @@ export default class CameraScreen extends React.Component {
           });
           Vibration.vibrate();
         });
-      });
     }
   };
 

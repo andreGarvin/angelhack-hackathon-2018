@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {View, Text, TouchableOpacity} from 'react-native'
-import Card from '../components/Card'
-import CardSection from '../components/CardSection'
+import Card from '../Card'
+import CardSection from '../CardSection'
 
 var pendingStyle = {color: 'red', borderWidth: 1, }
 var deStyle = {color: 'red', borderWidth: 1 }

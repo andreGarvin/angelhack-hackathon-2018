@@ -1,10 +1,11 @@
 import React from 'react';
 import { Text, View, Image} from 'react-native';
-import Card from './Card';
-import CardSection from './CardSection';
+
+import Card from '../Card';
+import CardSection from '../CardSection';
 
 const CompanyDetail = ({ company }) => {
-  const { name, thumbnail_img} = company;
+  const { name, thumbnail_img } = company;
   const {
     thumbnailStyle,
     headerContentStyle,
