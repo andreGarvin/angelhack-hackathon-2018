@@ -1,7 +1,7 @@
 import * as firebase from 'firebase';
 import uuid from 'uuid';
 
-class SnaptechAPI {
+class snaptechapi {
     constructor() {
         this.firebase = firebase.initializeApp({
             apiKey: "AIzaSyCKw_XMEYF8d8TEvmONTWu4zCZmmveJulU",
@@ -29,24 +29,21 @@ class SnaptechAPI {
     }
     async send(sessionId, message) {
         const firebaseUrl = `/sessions/${sessionId}/messages`
-        message =  {
+        message =  Object.assign(message, {
             timestamp: Date(),
-            ...message,
             uuid: uuid()
-        }
+        })
 
         if (message.technician) {
             await this.upadateSession(sessionId, 'active')
         }
         return await this.firebase.database().ref(firebaseUrl).push(message)   
     }
-    on(sessionId) {
-        return new Promise(resolve => {
-            const firebaseUrl = `/sessions/${sessionId}/messages`
-            this.firebase.database().ref(firebaseUrl).on('value', messages => {
-                messages = messages.val() ? Object.values(messages.val()) : []
-                resolve(messages)
-            })
+    on(sessionId, cb) {
+        const firebaseUrl = `/sessions/${sessionId}/messages`
+        this.firebase.database().ref(firebaseUrl).on('value', messages => {
+            messages = messages.val() ? Object.values(messages.val()) : []
+            cb(messages)
         })
     }
     getSession(sessionId) {
@@ -88,7 +85,7 @@ class SnaptechAPI {
     }
 }
 
-export default new SnaptechAPI
+export default new snaptechapi
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
 // storageRef.on('state_changed', storageObj => {
