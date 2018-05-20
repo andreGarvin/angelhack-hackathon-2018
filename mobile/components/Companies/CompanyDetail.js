@@ -4,16 +4,12 @@ import { Text, TouchableOpacity, View, Image} from 'react-native';
 import Card from '../Card';
 import CardSection from '../CardSection';
 
-import snaptechapi from 'snaptechapi';
-
 class CompanyDetail extends Component {
   constructor(props) {
     super(props);
   }
   async createSession(companyName) {
-    const { sessionId } = await snaptechapi.createSession('ricky', companyName)
-    this.props.navigation.navigate('Chat', {
-      sessionId,
+    this.props.navigation.navigate('SupportType', {
       companyName
     })
   }
