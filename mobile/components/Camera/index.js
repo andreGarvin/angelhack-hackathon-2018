@@ -1,5 +1,5 @@
-import React from 'react';
-import { Constants, Camera, FileSystem, Permissions } from 'expo';
+import React, { Component } from 'react';
+import { Constants, FileSystem, Camera, Permissions } from 'expo';
 import { StyleSheet, Text, View, TouchableOpacity, Slider, Vibration } from 'react-native';
 
 
@@ -24,32 +24,40 @@ const wbOrder = {
   incandescent: 'auto',
 };
 
-export default class CameraScreen extends React.Component {
-  state = {
-    flash: 'off',
-    zoom: 0,
-    autoFocus: 'on',
-    depth: 0,
-    type: 'back',
-    whiteBalance: 'auto',
-    ratio: '16:9',
-    ratios: [],
-    photoId: 1,
-    showGallery: false,
-    photos: [],
-    faces: [],
-    permissionsGranted: false,
-  };
+export default class CameraScreen extends Component {
+  constructor(props) {
+    super(props)
 
-  async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ permissionsGranted: status === 'granted' });
+    this.state = {
+      Record: false,
+      isRecording: 0,
+      flash: 'off',
+      zoom: 0,
+      autoFocus: 'on',
+      depth: 0,
+      type: 'back',
+      whiteBalance: 'auto',
+      ratio: '16:9',
+      ratios: [],
+      photoId: 1,
+      showGallery: false,
+      photos: [],
+      faces: [],
+      permissionsGranted: false,
+    };
+
+    this.startRecording = this.startRecording.bind(this)
+    this.upload = this.upload.bind(this)
   }
 
-  componentDidMount() {
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log(e, 'Directory exists');
-    });
+  async componentWillMount() {
+    const camera = await Permissions.askAsync(Permissions.CAMERA);
+    const record = await Permissions.askAsync(Permissions.AUDIO_RECORDING)
+    this.setState({ permissionsGranted: (camera.status === 'granted' && record.status === 'granted') });
+  }
+
+  async componentDidMount() {
+    FileSystem.makeDirectoryAsync(`${FileSystem.documentDirectory}photos`)
   }
 
   getRatios = async () => {
@@ -111,12 +119,32 @@ export default class CameraScreen extends React.Component {
     });
   }
 
+  async startRecording() {
+    Vibration.vibrate();
+    const video = await this.camera.recordAsync({
+      maxDuration: (1000 * 10)
+    })
+  }
+  async stopRecording() {
+    await this.camera.stopRecording()
+    this.setState({
+      Record: false,
+      isRecording: false
+    })
+  }
+
+  async upload(images) {
+    for (let i in images) {
+      await snaptechapi.upload(images[i])
+    }
+  }
+
   async takePicture() {
     if (this.camera) {
       const data = await this.camera.takePictureAsync()
       FileSystem.moveAsync({
           from: data.uri,
-          to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}.jpg`,
+          to: `${FileSystem.documentDirectory}photos/Photo_${this.state.photoId}`,
         }).then(() => {
           this.setState({
             photoId: this.state.photoId + 1,
@@ -130,7 +158,7 @@ export default class CameraScreen extends React.Component {
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
   renderGallery() {
-    return <GalleryScreen onPress={this.toggleView.bind(this)} />;
+    return <GalleryScreen upload={this.upload.bind(this)} onPress={this.toggleView.bind(this)} />;
   }
 
   renderFace({ bounds, faceID, rollAngle, yawAngle }) {
@@ -209,9 +237,38 @@ export default class CameraScreen extends React.Component {
         <Text style={{ color: 'white' }}>
           Camera permissions not granted - cannot open camera preview.
         </Text>
+        <TouchableOpacity
+          style={{
+            flex: .10,
+            height: 10,
+            marginHorizontal: 2,
+            marginBottom: 10,
+            marginTop: 20,
+            borderRadius: 8,
+            borderWidth: 1,
+            padding: 5,
+            borderColor: 'white',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onPress={async () => {
+            const camera = await Permissions.askAsync(Permissions.CAMERA);
+            const record = await Permissions.askAsync(Permissions.AUDIO_RECORDING)
+            this.setState({
+              permissionsGranted: (camera.status === 'granted' && record.status === 'granted')
+            })
+          }}
+        >
+          <Text
+            style={{
+              color: 'white'
+            }}
+          >Ask again</Text>
+        </TouchableOpacity>
       </View>
     );
   }
+
 
   renderCamera() {
     return (
@@ -219,6 +276,10 @@ export default class CameraScreen extends React.Component {
         ref={ref => {
           this.camera = ref;
         }}
+        // aspect={Camera.constants.Aspect.fill}
+        // captureMode={Camera.constants.CaptureMode.video}
+
+        // keepAwake={true}
         style={{
           flex: 1,
         }}
@@ -245,9 +306,6 @@ export default class CameraScreen extends React.Component {
           </TouchableOpacity>
           <TouchableOpacity style={styles.flipButton} onPress={this.toggleFlash.bind(this)}>
             <Text style={styles.flipText}> FLASH: {this.state.flash} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.flipButton} onPress={this.toggleWB.bind(this)}>
-            <Text style={styles.flipText}> WB: {this.state.whiteBalance} </Text>
           </TouchableOpacity>
         </View>
         <View
@@ -284,16 +342,43 @@ export default class CameraScreen extends React.Component {
             onPress={this.zoomOut.bind(this)}>
             <Text style={styles.flipText}> - </Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, { flex: 0.25, alignSelf: 'flex-end' }]}
-            onPress={this.toggleFocus.bind(this)}>
-            <Text style={styles.flipText}> AF : {this.state.autoFocus} </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
-            onPress={this.takePicture.bind(this)}>
-            <Text style={styles.flipText}> SNAP </Text>
-          </TouchableOpacity>
+          {
+            this.state.Record ?
+              <View></View>
+              :
+              <TouchableOpacity style={[styles.flipButton, { flex: 0.3, alignSelf: 'flex-end' }]} onPress={() => {
+                this.setState({
+                  Record: true
+                })
+              }}>
+                <Text style={styles.flipText}>Record</Text>
+              </TouchableOpacity>
+          }
+          {
+            this.state.Record ?
+              <TouchableOpacity style={[styles.flipButton, this.state.isRecording ? { borderColor: 'red' } : {}, { flex: 1, alignSelf: 'flex-end' }]} onPress={() => {
+  
+                if (!this.state.isRecording) {
+                  this.setState({
+                    isRecording: true
+                  })
+                  this.startRecording()
+                } else if (this.state.Record && this.state.isRecording) {
+                  this.setState({
+                    isRecording: false,
+                    Record: false
+                  })
+                }
+              }}>
+                <Text style={styles.flipText}>Record</Text>
+              </TouchableOpacity>
+              :
+              <TouchableOpacity
+                style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
+                onPress={this.takePicture.bind(this)}>
+                <Text style={styles.flipText}> SNAP </Text>
+              </TouchableOpacity>
+          }
           <TouchableOpacity
             style={[styles.flipButton, styles.galleryButton, { flex: 0.25, alignSelf: 'flex-end' }]}
             onPress={this.toggleView.bind(this)}>
