@@ -1,5 +1,5 @@
-const firebase = require('firebase')
-const uuid = require('uuid')
+import * as firebase from 'firebase';
+import uuid from 'uuid';
 
 class SnaptechAPI {
     constructor() {
@@ -45,7 +45,7 @@ class SnaptechAPI {
             })
         })
     }
-    getSession() {
+    getSession(sessionId) {
         return new Promise(resolve => {
             const firebaseUrl = `/sessions/${sessionId}`
             this.firebase.database().ref(firebaseUrl).on('value', session => {
@@ -57,7 +57,7 @@ class SnaptechAPI {
     sessions(type, name) {
         return new Promise(resolve => {
             this.firebase.database().ref('/sessions').on('value', sessions => {
-                let sessions = Object.values(sessions.val())
+                sessions = Object.values(sessions.val())
                     .filter(i => {
                         if (type === 'company') {
                             return i.companyName === name
@@ -85,7 +85,8 @@ class SnaptechAPI {
     }
 }
 
-module.exports = new SnaptechAPI
+const s = new SnaptechAPI
+export default s
 
 // const storageRef = firebase.storage().ref(`uploads/${fileObj.file_name}`).put(fileObj.file)
 // storageRef.on('state_changed', storageObj => {

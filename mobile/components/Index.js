@@ -2,11 +2,13 @@ import React, { Component } from 'react';
 import { View, Text, Button } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
+
+import Chat from './Chat';
 import Header from './Header';
 import Camera from './Camera';
 import Companies from './Companies';
 
-import SnapTechAPI from 'SnapTechAPI';
+import SnapTechAPI from 'snaptechapi';
 
 class Home extends Component {
   constructor(props) {
@@ -49,12 +51,4 @@ const Root = createStackNavigator({
   // Sessions,
 })
 
-class App extends Component {
-  render() {
-    return (
-      <Root />
-    )
-  }
-}
-
-export default App;
+export default Root;

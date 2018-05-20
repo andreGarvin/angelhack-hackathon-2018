@@ -7,7 +7,7 @@ const fs = RNFetchBlob.fs
 
 class upload extends snaptechAPI {
 
-    uploadPhoto(sessionId, username, photo) {
+    async uploadPhoto(sessionId, username, photo) {
 
         this.send(sessionId, {
             message: firebasePhotoUrl,
@@ -16,7 +16,7 @@ class upload extends snaptechAPI {
             username,
         })
     }
-    uploadVideo(sessionId, username, video) {
+    async uploadVideo(sessionId, username, video) {
         this.send(sessionId, {
             message: firebasePhotoUrl,
             timestamp: Date(),
